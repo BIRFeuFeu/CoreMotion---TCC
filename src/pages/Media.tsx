@@ -2,6 +2,7 @@
 
 import React from "react";
 import Navbar from "@/components/Navbar";
+import { Badge } from "@/components/ui/badge";
 import { Heart, MessageCircle, Share2, User, Music } from "lucide-react";
 
 const Media = () => {
