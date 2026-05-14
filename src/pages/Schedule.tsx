@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Calendar as CalendarIcon, MapPin, Users, Plus, Clock } from "lucide-react";
+import { MapPin, Users, Plus, Clock } from "lucide-react";
 import { UserProfile, Event, Sport } from "@/types/sports";
 import { showSuccess, showError } from "@/utils/toast";
 import { cn } from "@/lib/utils";
@@ -19,7 +19,6 @@ const Schedule = () => {
   const [events, setEvents] = useState<Event[]>([]);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
-  // Form state for new event
   const [newTitle, setNewTitle] = useState("");
   const [newSport, setNewSport] = useState<Sport>("Futebol");
   const [newType, setNewType] = useState<"Treino" | "Amistoso">("Treino");
@@ -66,7 +65,6 @@ const Schedule = () => {
     setIsDialogOpen(false);
     showSuccess("Evento agendado com sucesso!");
     
-    // Reset form
     setNewTitle("");
     setNewDate("");
     setNewLocation("");
@@ -92,14 +90,14 @@ const Schedule = () => {
       <main className="container mx-auto px-4 py-8 max-w-5xl">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">Agenda Esportiva</h1>
+            <h1 className="text-3xl font-bold text-gray-900 tracking-tight">Agenda CoreMotion</h1>
             <p className="text-gray-500">Gerencie seus treinos e competições</p>
           </div>
 
           {profile?.role === 'Técnico' && (
             <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
               <DialogTrigger asChild>
-                <Button className="bg-orange-600 hover:bg-orange-700 rounded-xl gap-2">
+                <Button className="bg-red-600 hover:bg-red-700 rounded-xl gap-2 shadow-lg shadow-red-100">
                   <Plus size={20} /> Novo Evento
                 </Button>
               </DialogTrigger>
@@ -148,7 +146,7 @@ const Schedule = () => {
                     <Input placeholder="Ex: Ginásio Principal" value={newLocation} onChange={e => setNewLocation(e.target.value)} />
                   </div>
                 </div>
-                <Button onClick={handleAddEvent} className="w-full bg-orange-600">Confirmar Agendamento</Button>
+                <Button onClick={handleAddEvent} className="w-full bg-red-600 hover:bg-red-700">Confirmar Agendamento</Button>
               </DialogContent>
             </Dialog>
           )}
@@ -160,12 +158,12 @@ const Schedule = () => {
               <div className="space-y-4">
                 <div className="flex justify-between items-start">
                   <Badge className={cn(
-                    "border-none",
+                    "border-none font-bold",
                     event.type === 'Treino' ? 'bg-blue-100 text-blue-700' : 'bg-purple-100 text-purple-700'
                   )}>
                     {event.type}
                   </Badge>
-                  <span className="text-xs font-bold text-orange-600 uppercase tracking-wider">{event.sport}</span>
+                  <span className="text-xs font-black text-red-600 uppercase tracking-wider italic">{event.sport}</span>
                 </div>
 
                 <div>
@@ -184,7 +182,7 @@ const Schedule = () => {
                   </div>
                   <div className="flex items-center gap-2">
                     <Users size={16} className="text-gray-400" />
-                    <span>{event.participants.length} participantes confirmados</span>
+                    <span>{event.participants.length} participantes</span>
                   </div>
                 </div>
               </div>
@@ -192,29 +190,20 @@ const Schedule = () => {
               <div className="mt-6 pt-6 border-t border-gray-50 flex items-center justify-between">
                 <div className="flex -space-x-2">
                   {event.participants.slice(0, 4).map((p, i) => (
-                    <div key={i} className="w-8 h-8 rounded-full bg-orange-100 border-2 border-white flex items-center justify-center text-[10px] font-bold text-orange-700">
+                    <div key={i} className="w-8 h-8 rounded-full bg-red-50 border-2 border-white flex items-center justify-center text-[10px] font-bold text-red-700">
                       {p[0]}
                     </div>
                   ))}
-                  {event.participants.length > 4 && (
-                    <div className="w-8 h-8 rounded-full bg-gray-100 border-2 border-white flex items-center justify-center text-[10px] text-gray-500">
-                      +{event.participants.length - 4}
-                    </div>
-                  )}
                 </div>
 
                 {profile?.role === 'Atleta' && !event.participants.includes(profile.name) && (
-                  <Button onClick={() => handleJoin(event.id)} className="bg-orange-600 hover:bg-orange-700 rounded-xl px-6">
+                  <Button onClick={() => handleJoin(event.id)} className="bg-red-600 hover:bg-red-700 rounded-xl px-6 shadow-md shadow-red-100">
                     Participar
                   </Button>
                 )}
                 
                 {profile?.role === 'Atleta' && event.participants.includes(profile.name) && (
-                  <Badge className="bg-green-100 text-green-700 border-none px-4 py-1.5">Inscrito</Badge>
-                )}
-
-                {profile?.role === 'Civil' && (
-                  <span className="text-xs text-gray-400 italic">Apenas visualização</span>
+                  <Badge className="bg-green-100 text-green-700 border-none px-4 py-1.5 font-bold">Inscrito</Badge>
                 )}
               </div>
             </Card>

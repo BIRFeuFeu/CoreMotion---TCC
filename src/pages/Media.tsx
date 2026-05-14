@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Navbar from "@/components/Navbar";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -32,10 +32,10 @@ const Media = () => {
       <Tabs defaultValue="feed" className="w-full">
         <div className="sticky top-16 z-40 bg-gray-900/80 backdrop-blur-md border-b border-gray-800">
           <TabsList className="w-full justify-center bg-transparent h-14 gap-8">
-            <TabsTrigger value="feed" className="data-[state=active]:bg-transparent data-[state=active]:text-orange-500 text-gray-400 font-bold text-lg border-b-2 border-transparent data-[state=active]:border-orange-500 rounded-none px-4">
+            <TabsTrigger value="feed" className="data-[state=active]:bg-transparent data-[state=active]:text-red-500 text-gray-400 font-bold text-lg border-b-2 border-transparent data-[state=active]:border-red-500 rounded-none px-4">
               Feed
             </TabsTrigger>
-            <TabsTrigger value="news" className="data-[state=active]:bg-transparent data-[state=active]:text-orange-500 text-gray-400 font-bold text-lg border-b-2 border-transparent data-[state=active]:border-orange-500 rounded-none px-4">
+            <TabsTrigger value="news" className="data-[state=active]:bg-transparent data-[state=active]:text-red-500 text-gray-400 font-bold text-lg border-b-2 border-transparent data-[state=active]:border-red-500 rounded-none px-4">
               Notícias
             </TabsTrigger>
           </TabsList>
@@ -50,7 +50,7 @@ const Media = () => {
                   
                   <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/80 to-transparent text-white space-y-3">
                     <div className="flex items-center gap-3">
-                      <div className="w-12 h-12 rounded-full bg-orange-600 border-2 border-white flex items-center justify-center">
+                      <div className="w-12 h-12 rounded-full bg-red-600 border-2 border-white flex items-center justify-center">
                         <User size={24} />
                       </div>
                       <div>
@@ -67,18 +67,18 @@ const Media = () => {
 
                   <div className="absolute bottom-20 right-4 flex flex-col gap-6 text-white items-center">
                     <div className="flex flex-col items-center gap-1 group cursor-pointer">
-                      <div className="p-3 bg-white/10 rounded-full backdrop-blur-md group-hover:bg-red-500 transition-colors">
+                      <div className="p-3 bg-white/10 rounded-full backdrop-blur-md group-hover:bg-red-600 transition-colors">
                         <Heart size={28} fill="white" />
                       </div>
                       <span className="text-xs font-bold">{post.likes}</span>
                     </div>
                     <div className="flex flex-col items-center gap-1 group cursor-pointer">
-                      <div className="p-3 bg-white/10 rounded-full backdrop-blur-md group-hover:bg-blue-500 transition-colors">
+                      <div className="p-3 bg-white/10 rounded-full backdrop-blur-md group-hover:bg-blue-600 transition-colors">
                         <MessageCircle size={28} />
                       </div>
                       <span className="text-xs font-bold">{post.comments}</span>
                     </div>
-                    <div className="p-3 bg-white/10 rounded-full backdrop-blur-md hover:bg-green-500 transition-colors cursor-pointer">
+                    <div className="p-3 bg-white/10 rounded-full backdrop-blur-md hover:bg-green-600 transition-colors cursor-pointer">
                       <Share2 size={28} />
                     </div>
                   </div>
@@ -92,7 +92,7 @@ const Media = () => {
         <TabsContent value="news" className="m-0 bg-gray-50 min-h-[calc(100vh-120px)]">
           <div className="container mx-auto px-4 py-8 max-w-4xl space-y-6">
             <div className="flex items-center gap-2 mb-8">
-              <Newspaper className="text-orange-600" size={28} />
+              <Newspaper className="text-red-600" size={28} />
               <h2 className="text-2xl font-bold text-gray-900">Últimas do Esporte</h2>
             </div>
             
@@ -100,19 +100,19 @@ const Media = () => {
               <Card key={item.id} className="overflow-hidden border-none shadow-sm hover:shadow-md transition-all bg-white rounded-3xl flex flex-col md:flex-row">
                 <div className="md:w-1/3 h-48 md:h-auto relative">
                   <img src={item.image} alt={item.title} className="w-full h-full object-cover" />
-                  <Badge className="absolute top-4 left-4 bg-orange-600 text-white border-none">
+                  <Badge className="absolute top-4 left-4 bg-red-600 text-white border-none font-bold">
                     {item.sport}
                   </Badge>
                 </div>
                 <div className="p-6 md:w-2/3 space-y-3">
                   <span className="text-xs text-gray-400 font-medium">{item.date}</span>
-                  <h3 className="text-xl font-bold text-gray-900 leading-tight hover:text-orange-600 cursor-pointer transition-colors">
+                  <h3 className="text-xl font-bold text-gray-900 leading-tight hover:text-red-600 cursor-pointer transition-colors">
                     {item.title}
                   </h3>
                   <p className="text-gray-500 text-sm line-clamp-2">
                     {item.summary}
                   </p>
-                  <button className="text-orange-600 font-bold text-sm flex items-center gap-1 hover:underline">
+                  <button className="text-red-600 font-bold text-sm flex items-center gap-1 hover:underline">
                     Ler matéria completa <PlayCircle size={16} />
                   </button>
                 </div>

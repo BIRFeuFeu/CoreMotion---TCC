@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Plus, Image as ImageIcon, Video, Send } from "lucide-react";
+import { Plus, Image as ImageIcon, Send } from "lucide-react";
 import { Sport } from "@/types/sports";
 import { showSuccess, showError } from "@/utils/toast";
 
@@ -44,19 +44,19 @@ const CreatePostDialog = ({ onPostCreated }: CreatePostDialogProps) => {
     setIsOpen(false);
     setContent("");
     setMediaUrl("");
-    showSuccess("Postagem publicada!");
+    showSuccess("Postagem publicada no CoreMotion!");
   };
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <Button className="fixed bottom-24 right-6 md:right-12 w-14 h-14 rounded-full bg-orange-600 hover:bg-orange-700 shadow-lg z-50 p-0">
+        <Button className="fixed bottom-24 right-6 md:right-12 w-14 h-14 rounded-full bg-red-600 hover:bg-red-700 shadow-xl z-50 p-0 shadow-red-200">
           <Plus size={32} />
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px] rounded-3xl">
         <DialogHeader>
-          <DialogTitle>Nova Publicação</DialogTitle>
+          <DialogTitle className="tracking-tight">Nova Publicação</DialogTitle>
         </DialogHeader>
         <div className="grid gap-4 py-4">
           <div className="space-y-2">
@@ -65,13 +65,13 @@ const CreatePostDialog = ({ onPostCreated }: CreatePostDialogProps) => {
               placeholder="Descreva seu treino ou conquista..." 
               value={content}
               onChange={(e) => setContent(e.target.value)}
-              className="rounded-xl resize-none h-24"
+              className="rounded-xl resize-none h-24 focus-visible:ring-red-600"
             />
           </div>
           <div className="space-y-2">
             <Label>Esporte</Label>
             <Select value={sport} onValueChange={(v: Sport) => setSport(v)}>
-              <SelectTrigger className="rounded-xl">
+              <SelectTrigger className="rounded-xl focus:ring-red-600">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
@@ -88,13 +88,13 @@ const CreatePostDialog = ({ onPostCreated }: CreatePostDialogProps) => {
                 placeholder="https://exemplo.com/imagem.jpg" 
                 value={mediaUrl}
                 onChange={(e) => setMediaUrl(e.target.value)}
-                className="rounded-xl pl-10"
+                className="rounded-xl pl-10 focus-visible:ring-red-600"
               />
               <ImageIcon className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
             </div>
           </div>
         </div>
-        <Button onClick={handlePost} className="w-full bg-orange-600 hover:bg-orange-700 rounded-xl h-12 gap-2">
+        <Button onClick={handlePost} className="w-full bg-red-600 hover:bg-red-700 rounded-xl h-12 gap-2 font-bold shadow-lg shadow-red-100">
           <Send size={18} /> Publicar
         </Button>
       </DialogContent>

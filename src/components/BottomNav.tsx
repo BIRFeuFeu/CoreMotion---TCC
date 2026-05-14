@@ -25,11 +25,11 @@ const BottomNav = () => {
             to={item.path}
             className={cn(
               "flex flex-col items-center gap-1 transition-colors",
-              isActive ? "text-orange-600" : "text-gray-400 hover:text-gray-600"
+              isActive ? "text-red-600" : "text-gray-400 hover:text-gray-600"
             )}
           >
             <item.icon size={24} strokeWidth={isActive ? 2.5 : 2} />
-            <span className="text-[10px] font-medium">{item.label}</span>
+            <span className="text-[10px] font-bold">{item.label}</span>
           </Link>
         );
       })}

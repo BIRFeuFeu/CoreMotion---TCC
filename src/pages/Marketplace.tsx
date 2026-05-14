@@ -58,13 +58,13 @@ const Marketplace = () => {
           <aside className="w-full md:w-64 space-y-6">
             <Card className="p-6 rounded-2xl border-none shadow-sm bg-white">
               <div className="flex items-center gap-2 mb-4">
-                <Filter size={18} className="text-orange-600" />
+                <Filter size={18} className="text-red-600" />
                 <h3 className="font-bold">Filtros</h3>
               </div>
               
               <div className="space-y-4">
                 <div>
-                  <Label className="text-xs text-gray-400 uppercase font-bold">Esporte</Label>
+                  <Label className="text-xs text-gray-400 uppercase font-black">Esporte</Label>
                   <div className="mt-2 space-y-1">
                     {['Todos', 'Judô', 'Jiu-jitsu', 'Basquete', 'Futebol', 'Vôlei'].map((s) => (
                       <button
@@ -72,7 +72,7 @@ const Marketplace = () => {
                         onClick={() => setSelectedSport(s as any)}
                         className={cn(
                           "w-full text-left px-3 py-2 rounded-lg text-sm transition-colors",
-                          selectedSport === s ? "bg-orange-50 text-orange-600 font-bold" : "text-gray-600 hover:bg-gray-50"
+                          selectedSport === s ? "bg-red-50 text-red-600 font-bold" : "text-gray-600 hover:bg-gray-50"
                         )}
                       >
                         {s}
@@ -90,7 +90,7 @@ const Marketplace = () => {
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
                 <Input 
                   placeholder="Buscar equipamentos..." 
-                  className="pl-10 rounded-xl bg-white border-none shadow-sm" 
+                  className="pl-10 rounded-xl bg-white border-none shadow-sm focus-visible:ring-red-600" 
                   value={search}
                   onChange={e => setSearch(e.target.value)}
                 />
@@ -103,7 +103,7 @@ const Marketplace = () => {
                 <Card key={product.id} className="group overflow-hidden border-none shadow-sm rounded-2xl bg-white hover:shadow-md transition-all">
                   <div className="relative h-48 overflow-hidden">
                     <img src={product.image} alt={product.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                    <Badge className="absolute top-4 left-4 bg-white/90 text-orange-600 border-none">
+                    <Badge className="absolute top-4 left-4 bg-white/90 text-red-600 border-none font-bold">
                       {product.sport}
                     </Badge>
                   </div>
@@ -114,14 +114,13 @@ const Marketplace = () => {
                       <Star size={14} fill="currentColor" />
                       <Star size={14} fill="currentColor" />
                       <Star size={14} fill="currentColor" className="text-gray-200" />
-                      <span className="text-xs text-gray-400 ml-1">(24)</span>
                     </div>
                     <h3 className="font-bold text-gray-900 line-clamp-1">{product.name}</h3>
                     <div className="flex items-center justify-between">
                       <p className="text-2xl font-bold text-gray-900">R$ {product.price}</p>
                       <Button 
                         onClick={() => handleAddToCart(product)}
-                        className="bg-gray-900 hover:bg-orange-600 text-white rounded-xl transition-colors"
+                        className="bg-gray-900 hover:bg-red-600 text-white rounded-xl transition-colors shadow-md"
                       >
                         Comprar
                       </Button>

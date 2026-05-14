@@ -1,6 +1,6 @@
 "use client";
 
-import { Home, Film, Calendar, ShoppingBag, User, Trophy } from "lucide-react";
+import { Home, Film, Calendar, ShoppingBag, User } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
 
@@ -19,11 +19,11 @@ const Navbar = () => {
     <nav className="sticky top-0 z-50 w-full border-b border-gray-200 bg-white/80 backdrop-blur-md">
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
         <Link to="/" className="flex items-center gap-2">
-          <div className="bg-orange-600 p-1.5 rounded-lg">
-            <Trophy className="text-white" size={20} />
+          <div className="bg-red-600 w-10 h-10 rounded-xl flex items-center justify-center shadow-lg shadow-red-200">
+            <span className="text-white font-black text-2xl italic">C</span>
           </div>
-          <span className="text-xl font-bold bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent">
-            SportHub
+          <span className="text-xl font-black tracking-tighter bg-gradient-to-r from-red-600 to-red-800 bg-clip-text text-transparent">
+            CoreMotion
           </span>
         </Link>
 
@@ -35,8 +35,8 @@ const Navbar = () => {
                 key={item.path}
                 to={item.path}
                 className={cn(
-                  "flex items-center gap-2 text-sm font-medium transition-colors hover:text-orange-600",
-                  isActive ? "text-orange-600" : "text-gray-600"
+                  "flex items-center gap-2 text-sm font-bold transition-colors hover:text-red-600",
+                  isActive ? "text-red-600" : "text-gray-600"
                 )}
               >
                 <item.icon size={18} />

@@ -18,10 +18,10 @@ const CartDrawer = () => {
   return (
     <Sheet>
       <SheetTrigger asChild>
-        <Button variant="outline" className="rounded-xl gap-2 bg-white border-none shadow-sm relative">
+        <Button variant="outline" className="rounded-xl gap-2 bg-white border-none shadow-sm relative hover:bg-red-50 hover:text-red-600">
           <ShoppingCart size={20} />
           {items.length > 0 && (
-            <span className="absolute -top-2 -right-2 bg-orange-600 text-white text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center">
+            <span className="absolute -top-2 -right-2 bg-red-600 text-white text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center shadow-md">
               {items.length}
             </span>
           )}
@@ -30,8 +30,8 @@ const CartDrawer = () => {
       </SheetTrigger>
       <SheetContent className="w-full sm:max-w-md flex flex-col">
         <SheetHeader>
-          <SheetTitle className="flex items-center gap-2">
-            <ShoppingBag className="text-orange-600" /> Seu Carrinho
+          <SheetTitle className="flex items-center gap-2 tracking-tight">
+            <ShoppingBag className="text-red-600" /> Seu Carrinho
           </SheetTitle>
         </SheetHeader>
         
@@ -41,7 +41,7 @@ const CartDrawer = () => {
               <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto text-gray-400">
                 <ShoppingCart size={32} />
               </div>
-              <p className="text-gray-500">Seu carrinho está vazio</p>
+              <p className="text-gray-500 font-medium">Seu carrinho está vazio</p>
             </div>
           ) : (
             <div className="space-y-4">
@@ -50,14 +50,14 @@ const CartDrawer = () => {
                   <img src={item.image} alt={item.name} className="w-20 h-20 object-cover rounded-xl" />
                   <div className="flex-1">
                     <h4 className="font-bold text-sm line-clamp-1">{item.name}</h4>
-                    <p className="text-xs text-gray-500">{item.sport}</p>
+                    <p className="text-xs text-gray-500 font-medium">{item.sport}</p>
                     <div className="flex justify-between items-center mt-2">
-                      <p className="font-bold text-orange-600">R$ {item.price}</p>
+                      <p className="font-bold text-red-600">R$ {item.price}</p>
                       <div className="flex items-center gap-3">
-                        <span className="text-xs font-medium">Qtd: {item.quantity}</span>
+                        <span className="text-xs font-bold">Qtd: {item.quantity}</span>
                         <button 
                           onClick={() => removeFromCart(item.id)}
-                          className="text-red-500 hover:bg-red-50 p-1.5 rounded-lg transition-colors"
+                          className="text-red-500 hover:bg-red-100 p-1.5 rounded-lg transition-colors"
                         >
                           <Trash2 size={16} />
                         </button>
@@ -73,10 +73,10 @@ const CartDrawer = () => {
         {items.length > 0 && (
           <div className="pt-6 border-t space-y-4">
             <div className="flex justify-between items-center">
-              <span className="text-gray-500">Total</span>
-              <span className="text-2xl font-bold text-gray-900">R$ {total.toFixed(2)}</span>
+              <span className="text-gray-500 font-medium">Total</span>
+              <span className="text-2xl font-black text-gray-900">R$ {total.toFixed(2)}</span>
             </div>
-            <Button onClick={handleCheckout} className="w-full bg-orange-600 hover:bg-orange-700 h-12 rounded-xl text-lg font-bold">
+            <Button onClick={handleCheckout} className="w-full bg-red-600 hover:bg-red-700 h-12 rounded-xl text-lg font-bold shadow-lg shadow-red-100">
               Finalizar Compra
             </Button>
           </div>
