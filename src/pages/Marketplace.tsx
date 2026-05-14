@@ -6,6 +6,33 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
+import { Label } from "@/components/ui/label";
+import { Search, ShoppingCart, Filter, Star } from "lucide-react";
+import { UserProfile, Product, Sport } from "@/types/sports";
+import { showSuccess } from "@/utils/toast";
+import { cn } from "@/lib/utils";
+
+const Marketplace = () => {
+  const [profile, setProfile] = useState<UserProfile | null>(null);
+  const [cartCount, setCartCount] = useState(0);
+  const [search, setSearch] = useState("");
+  const [selectedSport, setSelectedSport] = useState<Sport | 'Todos'>('Todos');
+  
+  const products: Product[] = [
+    { id: '1', name: 'Kimono Profissional A3', price: 350, sport: 'Jiu-jitsu', image: 'https://images.unsplash.com/photo-1552072805-2a9039d00e57?w=400&q=80' },
+    { id: '2', name: 'Bola de Basquete Wilson NBA', price: 180, sport: 'Basquete', image: 'https://images.unsplash.com/photo-1546519638-68e109498ffc?w=400&q=80' },
+    { id: '3', name: 'Chuteira Nike Mercurial Elite', price: 450, sport: 'Futebol', image: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400&q=80' },
+    { id: '4', name: 'Joelheira de Vôlei Mizuno', price: 85, sport: 'Vôlei', image: 'https://images.unsplash.com/photo-1592656670411-591e9c174695?w=400&q=80' },
+    <dyad-write path="src/pages/Marketplace.tsx" description="Importando o componente Label para corrigir o erro de definição">
+"use client";
+
+import React, { useState, useEffect } from "react";
+import Navbar from "@/components/Navbar";
+import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Badge } from "@/components/ui/badge";
+import { Label } from "@/components/ui/label";
 import { Search, ShoppingCart, Filter, Star } from "lucide-react";
 import { UserProfile, Product, Sport } from "@/types/sports";
 import { showSuccess } from "@/utils/toast";
@@ -31,7 +58,6 @@ const Marketplace = () => {
     if (saved) {
       const p = JSON.parse(saved);
       setProfile(p);
-      // Sugestão automática baseada no perfil
       if (p.favoriteSports.length > 0) setSelectedSport(p.favoriteSports[0]);
     }
   }, []);
@@ -53,7 +79,6 @@ const Marketplace = () => {
       
       <main className="container mx-auto px-4 py-8">
         <div className="flex flex-col md:flex-row gap-8">
-          {/* Filters Sidebar */}
           <aside className="w-full md:w-64 space-y-6">
             <Card className="p-6 rounded-2xl border-none shadow-sm bg-white">
               <div className="flex items-center gap-2 mb-4">
@@ -83,7 +108,6 @@ const Marketplace = () => {
             </Card>
           </aside>
 
-          {/* Products Grid */}
           <div className="flex-1 space-y-6">
             <div className="flex flex-col md:flex-row justify-between items-center gap-4">
               <div className="relative w-full md:max-w-md">
