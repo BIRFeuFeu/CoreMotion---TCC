@@ -7,13 +7,14 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Label } from "@/components/ui/label";
-import { Search, Filter, Star, ShoppingBag } from "lucide-react";
+import { Search, Filter, Star, ShoppingBag, X } from "lucide-react";
 import { UserProfile, Product, Sport, Category } from "@/types/sports";
 import { showSuccess } from "@/utils/toast";
 import { cn } from "@/lib/utils";
 import { useCart } from "@/context/CartContext";
 import CartDrawer from "@/components/CartDrawer";
 import { motion, AnimatePresence } from "framer-motion";
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 
 const Marketplace = () => {
   const [search, setSearch] = useState("");
@@ -60,135 +61,151 @@ const Marketplace = () => {
     return matchesSearch && matchesSport && matchesCategory;
   });
 
+  const FilterContent = () => (
+    <div className="space-y-6 py-4">
+      <div>
+        <Label className="text-[10px] text-gray-400 uppercase font-black tracking-widest mb-3 block">Esporte</Label>
+        <div className="grid grid-cols-2 gap-2">
+          {['Todos', 'Judô', 'Jiu-jitsu', 'Basquete', 'Futebol', 'Vôlei'].map((s) => (
+            <button
+              key={s}
+              onClick={() => setSelectedSport(s as any)}
+              className={cn(
+                "text-left px-3 py-2 rounded-lg text-xs transition-all",
+                selectedSport === s ? "bg-red-50 text-red-600 font-bold dark:bg-red-900/20" : "text-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800"
+              )}
+            >
+              {s}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div>
+        <Label className="text-[10px] text-gray-400 uppercase font-black tracking-widest mb-3 block">Categoria</Label>
+        <div className="grid grid-cols-2 gap-2">
+          {['Todas', 'Calçados', 'Vestuário', 'Equipamentos', 'Acessórios'].map((c) => (
+            <button
+              key={c}
+              onClick={() => setSelectedCategory(c as any)}
+              className={cn(
+                "text-left px-3 py-2 rounded-lg text-xs transition-all",
+                selectedCategory === c ? "bg-red-50 text-red-600 font-bold dark:bg-red-900/20" : "text-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800"
+              )}
+            >
+              {c}
+            </button>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-950 flex">
       <Sidebar />
       
-      <main className="flex-1 ml-20 p-8">
+      <main className="flex-1 ml-16 p-6 md:p-10">
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="max-w-6xl mx-auto space-y-8"
+          className="max-w-[1400px] mx-auto space-y-8"
         >
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="p-3 bg-red-600 rounded-2xl text-white shadow-lg shadow-red-200">
-                <ShoppingBag size={32} />
+              <div className="p-2.5 bg-red-600 rounded-xl text-white shadow-lg shadow-red-200">
+                <ShoppingBag size={24} />
               </div>
               <div>
-                <h1 className="text-4xl font-black tracking-tighter dark:text-white">Marketplace</h1>
-                <p className="text-gray-500">Equipamentos de alta performance</p>
+                <h1 className="text-3xl font-black tracking-tighter dark:text-white">Marketplace</h1>
+                <p className="text-sm text-gray-500">Equipamentos de alta performance</p>
               </div>
             </div>
-            <CartDrawer />
+            <div className="flex items-center gap-3">
+              <Sheet>
+                <SheetTrigger asChild>
+                  <Button variant="outline" className="rounded-xl gap-2 border-none shadow-sm bg-white dark:bg-gray-900">
+                    <Filter size={18} /> Filtros
+                  </Button>
+                </SheetTrigger>
+                <SheetContent side="right" className="w-[300px] sm:w-[400px]">
+                  <SheetHeader>
+                    <SheetTitle className="flex items-center gap-2">
+                      <Filter className="text-red-600" /> Refinar Busca
+                    </SheetTitle>
+                  </SheetHeader>
+                  <FilterContent />
+                </SheetContent>
+              </Sheet>
+              <CartDrawer />
+            </div>
           </div>
 
-          <div className="flex flex-col md:flex-row gap-8">
-            <aside className="w-full md:w-64 space-y-6">
-              <Card className="p-6 rounded-2xl border-none shadow-sm bg-white dark:bg-gray-900">
-                <div className="flex items-center gap-2 mb-6 dark:text-white">
-                  <Filter size={18} className="text-red-600" />
-                  <h3 className="font-bold">Filtros</h3>
-                </div>
-                
-                <div className="space-y-6">
-                  <div>
-                    <Label className="text-[10px] text-gray-400 uppercase font-black tracking-widest mb-3 block">Esporte</Label>
-                    <div className="space-y-1">
-                      {['Todos', 'Judô', 'Jiu-jitsu', 'Basquete', 'Futebol', 'Vôlei'].map((s) => (
-                        <button
-                          key={s}
-                          onClick={() => setSelectedSport(s as any)}
-                          className={cn(
-                            "w-full text-left px-3 py-2 rounded-lg text-sm transition-all",
-                            selectedSport === s ? "bg-red-50 text-red-600 font-bold dark:bg-red-900/20" : "text-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800"
-                          )}
-                        >
-                          {s}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div>
-                    <Label className="text-[10px] text-gray-400 uppercase font-black tracking-widest mb-3 block">Categoria</Label>
-                    <div className="space-y-1">
-                      {['Todas', 'Calçados', 'Vestuário', 'Equipamentos', 'Acessórios'].map((c) => (
-                        <button
-                          key={c}
-                          onClick={() => setSelectedCategory(c as any)}
-                          className={cn(
-                            "w-full text-left px-3 py-2 rounded-lg text-sm transition-all",
-                            selectedCategory === c ? "bg-red-50 text-red-600 font-bold dark:bg-red-900/20" : "text-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800"
-                          )}
-                        >
-                          {c}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </Card>
-            </aside>
-
-            <div className="flex-1 space-y-6">
-              <div className="relative">
-                <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
-                <Input 
-                  placeholder="Buscar equipamentos..." 
-                  className="pl-12 h-14 rounded-2xl bg-white dark:bg-gray-900 border-none shadow-sm focus-visible:ring-red-600 text-lg" 
-                  value={search}
-                  onChange={e => setSearch(e.target.value)}
-                />
-              </div>
-
-              <motion.div 
-                layout
-                className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
-              >
-                <AnimatePresence mode="popLayout">
-                  {filteredProducts.map((product) => (
-                    <motion.div
-                      key={product.id}
-                      layout
-                      initial={{ opacity: 0, scale: 0.9 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      exit={{ opacity: 0, scale: 0.9 }}
-                      transition={{ duration: 0.2 }}
-                    >
-                      <Card className="group overflow-hidden border-none shadow-sm rounded-3xl bg-white dark:bg-gray-900 hover:shadow-xl transition-all duration-300">
-                        <div className="relative h-56 overflow-hidden">
-                          <img src={product.image} alt={product.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
-                          <div className="absolute top-4 left-4 flex flex-col gap-2">
-                            <Badge className="bg-white/90 text-red-600 border-none font-bold shadow-sm">
-                              {product.sport}
-                            </Badge>
-                            <Badge className="bg-gray-900/80 text-white border-none text-[10px] backdrop-blur-sm">
-                              {product.category}
-                            </Badge>
-                          </div>
-                        </div>
-                        <div className="p-6 space-y-4">
-                          <div className="flex items-center gap-1 text-yellow-400">
-                            {[1,2,3,4,5].map(i => <Star key={i} size={14} fill="currentColor" />)}
-                          </div>
-                          <h3 className="font-bold text-gray-900 dark:text-white text-lg line-clamp-1">{product.name}</h3>
-                          <div className="flex items-center justify-between pt-2">
-                            <p className="text-2xl font-black text-gray-900 dark:text-white">R$ {product.price}</p>
-                            <Button 
-                              onClick={() => { addToCart(product); showSuccess("Adicionado!"); }} 
-                              className="bg-red-600 hover:bg-red-700 text-white rounded-xl px-6 h-11 font-bold shadow-lg shadow-red-100 active:scale-95 transition-all"
-                            >
-                              Comprar
-                            </Button>
-                          </div>
-                        </div>
-                      </Card>
-                    </motion.div>
-                  ))}
-                </AnimatePresence>
-              </motion.div>
+          <div className="space-y-6">
+            <div className="relative max-w-2xl mx-auto">
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
+              <Input 
+                placeholder="Buscar equipamentos..." 
+                className="pl-12 h-12 rounded-2xl bg-white dark:bg-gray-900 border-none shadow-sm focus-visible:ring-red-600" 
+                value={search}
+                onChange={e => setSearch(e.target.value)}
+              />
             </div>
+
+            <div className="flex flex-wrap gap-2 justify-center">
+              {selectedSport !== 'Todos' && (
+                <Badge variant="secondary" className="gap-1 px-3 py-1 rounded-full bg-red-50 text-red-600 border-none">
+                  {selectedSport} <X size={14} className="cursor-pointer" onClick={() => setSelectedSport('Todos')} />
+                </Badge>
+              )}
+              {selectedCategory !== 'Todas' && (
+                <Badge variant="secondary" className="gap-1 px-3 py-1 rounded-full bg-gray-100 text-gray-600 border-none">
+                  {selectedCategory} <X size={14} className="cursor-pointer" onClick={() => setSelectedCategory('Todas')} />
+                </Badge>
+              )}
+            </div>
+
+            <motion.div 
+              layout
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
+            >
+              <AnimatePresence mode="popLayout">
+                {filteredProducts.map((product) => (
+                  <motion.div
+                    key={product.id}
+                    layout
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.9 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <Card className="group overflow-hidden border-none shadow-sm rounded-3xl bg-white dark:bg-gray-900 hover:shadow-xl transition-all duration-300">
+                      <div className="relative h-52 overflow-hidden">
+                        <img src={product.image} alt={product.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+                        <div className="absolute top-3 left-3 flex flex-col gap-1.5">
+                          <Badge className="bg-white/90 text-red-600 border-none font-bold shadow-sm text-[10px]">
+                            {product.sport}
+                          </Badge>
+                        </div>
+                      </div>
+                      <div className="p-5 space-y-3">
+                        <h3 className="font-bold text-gray-900 dark:text-white text-sm line-clamp-1">{product.name}</h3>
+                        <div className="flex items-center justify-between pt-1">
+                          <p className="text-xl font-black text-gray-900 dark:text-white">R$ {product.price}</p>
+                          <Button 
+                            onClick={() => { addToCart(product); showSuccess("Adicionado!"); }} 
+                            size="sm"
+                            className="bg-red-600 hover:bg-red-700 text-white rounded-xl font-bold shadow-lg shadow-red-100 active:scale-95 transition-all"
+                          >
+                            Comprar
+                          </Button>
+                        </div>
+                      </div>
+                    </Card>
+                  </motion.div>
+                ))}
+              </AnimatePresence>
+            </motion.div>
           </div>
         </motion.div>
       </main>

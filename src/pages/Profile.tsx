@@ -13,7 +13,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { 
   User, Settings, Trophy, Mail, Building2, 
-  Medal, Swords, Save, GraduationCap 
+  Medal, Swords, Save, GraduationCap, Camera 
 } from "lucide-react";
 import { UserProfile, Sport } from "@/types/sports";
 import { showSuccess } from "@/utils/toast";
@@ -25,7 +25,6 @@ const Profile = () => {
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   
-  // Edit states
   const [editData, setEditData] = useState<Partial<UserProfile>>({});
 
   useEffect(() => {
@@ -54,13 +53,17 @@ const Profile = () => {
     <div className="min-h-screen bg-gray-50 dark:bg-gray-950 flex">
       <Sidebar />
       
-      <main className="flex-1 ml-20 p-8">
-        <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-4 gap-8">
+      <main className="flex-1 ml-16 p-6 md:p-10">
+        <div className="max-w-[1400px] mx-auto grid grid-cols-1 lg:grid-cols-4 gap-8">
           <div className="lg:col-span-1 space-y-6">
             <Card className="p-8 rounded-3xl border-none shadow-sm bg-white dark:bg-gray-900 text-center">
-              <div className="relative inline-block mb-4">
-                <div className="w-32 h-32 rounded-full bg-red-50 dark:bg-red-900/20 flex items-center justify-center text-red-600 mx-auto border-4 border-white dark:border-gray-800 shadow-lg">
-                  <User size={64} />
+              <div className="relative inline-block mb-4 group">
+                <div className="w-32 h-32 rounded-full bg-red-50 dark:bg-red-900/20 flex items-center justify-center text-red-600 mx-auto border-4 border-white dark:border-gray-800 shadow-lg overflow-hidden">
+                  {profile.avatar ? (
+                    <img src={profile.avatar} alt={profile.name} className="w-full h-full object-cover" />
+                  ) : (
+                    <User size={64} />
+                  )}
                 </div>
               </div>
               <h2 className="text-2xl font-bold text-gray-900 dark:text-white tracking-tight">{profile.name}</h2>
@@ -82,6 +85,19 @@ const Profile = () => {
                     <DialogTitle>Editar Perfil Completo</DialogTitle>
                   </DialogHeader>
                   <div className="grid gap-6 py-4">
+                    <div className="space-y-2">
+                      <Label>URL da Foto de Perfil</Label>
+                      <div className="relative">
+                        <Input 
+                          placeholder="https://exemplo.com/foto.jpg"
+                          value={editData.avatar || ""} 
+                          onChange={e => setEditData({...editData, avatar: e.target.value})}
+                          className="pl-10"
+                        />
+                        <Camera className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
+                      </div>
+                    </div>
+
                     <div className="grid grid-cols-2 gap-4">
                       <div className="space-y-2">
                         <Label>Nome</Label>
