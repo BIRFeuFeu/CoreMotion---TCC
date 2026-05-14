@@ -6,7 +6,7 @@ import Navbar from "@/components/Navbar";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { UserProfile } from "@/types/sports";
-import { ArrowRight, TrendingUp } from "lucide-react";
+import { ArrowRight, TrendingUp, Trophy } from "lucide-react";
 
 const Index = () => {
   const navigate = useNavigate();
