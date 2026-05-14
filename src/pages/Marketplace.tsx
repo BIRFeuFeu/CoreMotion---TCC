@@ -9,6 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import { Search, ShoppingCart, Filter, Star } from "lucide-react";
 import { UserProfile, Product, Sport } from "@/types/sports";
 import { showSuccess } from "@/utils/toast";
+import { cn } from "@/lib/utils";
 
 const Marketplace = () => {
   const [profile, setProfile] = useState<UserProfile | null>(null);

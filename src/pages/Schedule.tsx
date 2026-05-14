@@ -12,6 +12,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Calendar as CalendarIcon, MapPin, Users, Plus, Clock } from "lucide-react";
 import { UserProfile, Event, Sport } from "@/types/sports";
 import { showSuccess, showError } from "@/utils/toast";
+import { cn } from "@/lib/utils";
 
 const Schedule = () => {
   const [profile, setProfile] = useState<UserProfile | null>(null);
