@@ -7,16 +7,18 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Label } from "@/components/ui/label";
-import { Search, ShoppingCart, Filter, Star } from "lucide-react";
+import { Search, Filter, Star } from "lucide-react";
 import { UserProfile, Product, Sport } from "@/types/sports";
 import { showSuccess } from "@/utils/toast";
 import { cn } from "@/lib/utils";
+import { useCart } from "@/context/CartContext";
+import CartDrawer from "@/components/CartDrawer";
 
 const Marketplace = () => {
   const [profile, setProfile] = useState<UserProfile | null>(null);
-  const [cartCount, setCartCount] = useState(0);
   const [search, setSearch] = useState("");
   const [selectedSport, setSelectedSport] = useState<Sport | 'Todos'>('Todos');
+  const { addToCart } = useCart();
   
   const products: Product[] = [
     { id: '1', name: 'Kimono Profissional A3', price: 350, sport: 'Jiu-jitsu', image: 'https://images.unsplash.com/photo-1552072805-2a9039d00e57?w=400&q=80' },
@@ -42,9 +44,9 @@ const Marketplace = () => {
     return matchesSearch && matchesSport;
   });
 
-  const addToCart = (name: string) => {
-    setCartCount(prev => prev + 1);
-    showSuccess(`${name} adicionado ao carrinho!`);
+  const handleAddToCart = (product: Product) => {
+    addToCart(product);
+    showSuccess(`${product.name} adicionado ao carrinho!`);
   };
 
   return (
@@ -93,10 +95,7 @@ const Marketplace = () => {
                   onChange={e => setSearch(e.target.value)}
                 />
               </div>
-              <Button variant="outline" className="rounded-xl gap-2 bg-white border-none shadow-sm">
-                <ShoppingCart size={20} />
-                Carrinho ({cartCount})
-              </Button>
+              <CartDrawer />
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -121,7 +120,7 @@ const Marketplace = () => {
                     <div className="flex items-center justify-between">
                       <p className="text-2xl font-bold text-gray-900">R$ {product.price}</p>
                       <Button 
-                        onClick={() => addToCart(product.name)}
+                        onClick={() => handleAddToCart(product)}
                         className="bg-gray-900 hover:bg-orange-600 text-white rounded-xl transition-colors"
                       >
                         Comprar
