@@ -2,11 +2,11 @@
 
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import BottomNav from "@/components/BottomNav";
+import Navbar from "@/components/Navbar";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { User, Settings, LogOut, Bell, ShieldCheck, Trophy } from "lucide-react";
+import { User, Settings, LogOut, Bell, ShieldCheck, Trophy, Activity, Target } from "lucide-react";
 import { UserProfile } from "@/types/sports";
 
 const Profile = () => {
@@ -27,82 +27,129 @@ const Profile = () => {
   if (!profile) return null;
 
   return (
-    <div className="min-h-screen bg-gray-50 pb-24">
-      <div className="bg-orange-600 h-48 relative">
-        <div className="absolute -bottom-12 left-1/2 -translate-x-1/2">
-          <div className="w-24 h-24 rounded-full bg-white p-1 shadow-xl">
-            <div className="w-full h-full rounded-full bg-gray-100 flex items-center justify-center text-orange-600">
-              <User size={48} />
+    <div className="min-h-screen bg-gray-50">
+      <Navbar />
+      
+      <main className="container mx-auto px-4 py-8 max-w-6xl">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+          {/* Profile Card */}
+          <div className="lg:col-span-1 space-y-6">
+            <Card className="p-8 rounded-3xl border-none shadow-sm bg-white text-center">
+              <div className="relative inline-block mb-4">
+                <div className="w-32 h-32 rounded-full bg-orange-100 flex items-center justify-center text-orange-600 mx-auto border-4 border-white shadow-lg">
+                  <User size={64} />
+                </div>
+                <div className="absolute bottom-0 right-0 bg-green-500 w-6 h-6 rounded-full border-4 border-white" />
+              </div>
+              <h2 className="text-2xl font-bold text-gray-900">{profile.name}</h2>
+              <p className="text-gray-500 mb-4">{profile.role}</p>
+              <div className="flex flex-wrap justify-center gap-2 mb-6">
+                {profile.favoriteSports.map(s => (
+                  <Badge key={s} className="bg-orange-50 text-orange-600 border-none">{s}</Badge>
+                ))}
+              </div>
+              <Button variant="outline" className="w-full rounded-xl gap-2">
+                <Settings size={18} /> Editar Perfil
+              </Button>
+            </Card>
+
+            <Card className="p-6 rounded-3xl border-none shadow-sm bg-gray-900 text-white">
+              <h3 className="font-bold mb-4 flex items-center gap-2">
+                <Trophy size={18} className="text-orange-500" /> Conquistas
+              </h3>
+              <div className="space-y-4">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center">🥇</div>
+                  <div>
+                    <p className="text-sm font-bold">Primeiro Treino</p>
+                    <p className="text-xs text-gray-400">Concluído em Maio</p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center">🔥</div>
+                  <div>
+                    <p className="text-sm font-bold">7 Dias Seguidos</p>
+                    <p className="text-xs text-gray-400">Frequência máxima</p>
+                  </div>
+                </div>
+              </div>
+            </Card>
+          </div>
+
+          {/* Main Content */}
+          <div className="lg:col-span-3 space-y-8">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <Card className="p-6 rounded-2xl border-none shadow-sm bg-white flex items-center gap-4">
+                <div className="p-3 bg-blue-50 text-blue-600 rounded-xl">
+                  <Activity size={24} />
+                </div>
+                <div>
+                  <p className="text-sm text-gray-500">Treinos</p>
+                  <p className="text-2xl font-bold">12</p>
+                </div>
+              </Card>
+              <Card className="p-6 rounded-2xl border-none shadow-sm bg-white flex items-center gap-4">
+                <div className="p-3 bg-green-50 text-green-600 rounded-xl">
+                  <Target size={24} />
+                </div>
+                <div>
+                  <p className="text-sm text-gray-500">Meta Semanal</p>
+                  <p className="text-2xl font-bold">85%</p>
+                </div>
+              </Card>
+              <Card className="p-6 rounded-2xl border-none shadow-sm bg-white flex items-center gap-4">
+                <div className="p-3 bg-purple-50 text-purple-600 rounded-xl">
+                  <Trophy size={24} />
+                </div>
+                <div>
+                  <p className="text-sm text-gray-500">Pontos</p>
+                  <p className="text-2xl font-bold">2.450</p>
+                </div>
+              </Card>
             </div>
+
+            <section className="space-y-4">
+              <h3 className="text-xl font-bold text-gray-900">Configurações da Experiência</h3>
+              <Card className="divide-y divide-gray-100 border-none shadow-sm rounded-3xl overflow-hidden bg-white">
+                <div className="p-6 flex items-center justify-between hover:bg-gray-50 cursor-pointer transition-colors">
+                  <div className="flex items-center gap-4">
+                    <div className="p-2 bg-gray-100 rounded-lg text-gray-600">
+                      <Bell size={20} />
+                    </div>
+                    <div>
+                      <p className="font-bold">Notificações de {profile.favoriteSports[0]}</p>
+                      <p className="text-sm text-gray-500">Alertas de novos treinos e amistosos</p>
+                    </div>
+                  </div>
+                  <div className="w-12 h-6 bg-orange-600 rounded-full relative">
+                    <div className="absolute right-1 top-1 w-4 h-4 bg-white rounded-full" />
+                  </div>
+                </div>
+                <div className="p-6 flex items-center justify-between hover:bg-gray-50 cursor-pointer transition-colors">
+                  <div className="flex items-center gap-4">
+                    <div className="p-2 bg-gray-100 rounded-lg text-gray-600">
+                      <ShieldCheck size={20} />
+                    </div>
+                    <div>
+                      <p className="font-bold">Privacidade do Perfil</p>
+                      <p className="text-sm text-gray-500">Quem pode ver suas estatísticas</p>
+                    </div>
+                  </div>
+                </div>
+              </Card>
+            </section>
+
+            <Button 
+              variant="ghost" 
+              className="text-red-500 hover:text-red-600 hover:bg-red-50 rounded-xl px-8"
+              onClick={handleLogout}
+            >
+              <LogOut size={20} className="mr-2" />
+              Sair da Conta
+            </Button>
           </div>
         </div>
-        <div className="absolute top-6 right-6 text-white">
-          <Settings size={24} />
-        </div>
-      </div>
-
-      <main className="mt-16 p-6 space-y-8 max-w-md mx-auto">
-        <div className="text-center space-y-2">
-          <h2 className="text-2xl font-bold text-gray-900">{profile.name}</h2>
-          <div className="flex justify-center gap-2">
-            <Badge variant="outline" className="border-orange-200 text-orange-700">
-              {profile.role}
-            </Badge>
-            <Badge variant="outline" className="border-blue-200 text-blue-700">
-              Nível 1
-            </Badge>
-          </div>
-        </div>
-
-        <section className="space-y-4">
-          <h3 className="font-bold text-gray-900">Meus Esportes</h3>
-          <div className="flex flex-wrap gap-2">
-            {profile.favoriteSports.map((sport) => (
-              <Badge key={sport} className="bg-gray-900 text-white px-4 py-1 rounded-full">
-                {sport}
-              </Badge>
-            ))}
-          </div>
-        </section>
-
-        <section className="space-y-3">
-          <h3 className="font-bold text-gray-900">Configurações da Experiência</h3>
-          <Card className="divide-y divide-gray-100 border-none shadow-sm rounded-2xl overflow-hidden">
-            <div className="p-4 flex items-center justify-between hover:bg-gray-50 cursor-pointer">
-              <div className="flex items-center gap-3">
-                <Bell size={20} className="text-gray-400" />
-                <span className="text-sm font-medium">Notificações de {profile.favoriteSports[0]}</span>
-              </div>
-              <div className="w-10 h-5 bg-orange-600 rounded-full relative">
-                <div className="absolute right-1 top-1 w-3 h-3 bg-white rounded-full" />
-              </div>
-            </div>
-            <div className="p-4 flex items-center justify-between hover:bg-gray-50 cursor-pointer">
-              <div className="flex items-center gap-3">
-                <ShieldCheck size={20} className="text-gray-400" />
-                <span className="text-sm font-medium">Privacidade do Perfil</span>
-              </div>
-            </div>
-            <div className="p-4 flex items-center justify-between hover:bg-gray-50 cursor-pointer">
-              <div className="flex items-center gap-3">
-                <Trophy size={20} className="text-gray-400" />
-                <span className="text-sm font-medium">Minhas Conquistas</span>
-              </div>
-            </div>
-          </Card>
-        </section>
-
-        <Button 
-          variant="ghost" 
-          className="w-full text-red-500 hover:text-red-600 hover:bg-red-50 rounded-xl"
-          onClick={handleLogout}
-        >
-          <LogOut size={20} className="mr-2" />
-          Sair da Conta
-        </Button>
       </main>
-
-      <BottomNav />
     </div>
   );
 };

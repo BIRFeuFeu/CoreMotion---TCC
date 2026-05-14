@@ -2,10 +2,11 @@
 
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import BottomNav from "@/components/BottomNav";
+import Navbar from "@/components/Navbar";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { UserProfile } from "@/types/sports";
+import { ArrowRight, TrendingUp } from "lucide-react";
 
 const Index = () => {
   const navigate = useNavigate();
@@ -21,10 +22,11 @@ const Index = () => {
   }, [navigate]);
 
   const news = [
-    { id: 1, title: "Brasil conquista ouro no Judô em Paris", sport: "Judô", image: "https://images.unsplash.com/photo-1555597673-b21d5c935865?w=800&q=80" },
-    { id: 2, title: "Final do campeonato de Jiu-jitsu agita SP", sport: "Jiu-jitsu", image: "https://images.unsplash.com/photo-1552072805-2a9039d00e57?w=800&q=80" },
-    { id: 3, title: "Novo recorde na NBA impressiona fãs", sport: "Basquete", image: "https://images.unsplash.com/photo-1546519638-68e109498ffc?w=800&q=80" },
-    { id: 4, title: "Vôlei brasileiro se prepara para o mundial", sport: "Vôlei", image: "https://images.unsplash.com/photo-1592656670411-591e9c174695?w=800&q=80" },
+    { id: 1, title: "Brasil conquista ouro no Judô em Paris", sport: "Judô", date: "2h atrás", image: "https://images.unsplash.com/photo-1555597673-b21d5c935865?w=800&q=80" },
+    { id: 2, title: "Final do campeonato de Jiu-jitsu agita SP", sport: "Jiu-jitsu", date: "5h atrás", image: "https://images.unsplash.com/photo-1552072805-2a9039d00e57?w=800&q=80" },
+    { id: 3, title: "Novo recorde na NBA impressiona fãs", sport: "Basquete", date: "1d atrás", image: "https://images.unsplash.com/photo-1546519638-68e109498ffc?w=800&q=80" },
+    { id: 4, title: "Vôlei brasileiro se prepara para o mundial", sport: "Vôlei", date: "3h atrás", image: "https://images.unsplash.com/photo-1592656670411-591e9c174695?w=800&q=80" },
+    { id: 5, title: "Libertadores: Confrontos das quartas definidos", sport: "Futebol", date: "1h atrás", image: "https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=800&q=80" },
   ];
 
   const filteredNews = profile 
@@ -32,41 +34,90 @@ const Index = () => {
     : news;
 
   return (
-    <div className="min-h-screen bg-gray-50 pb-24">
-      <header className="bg-white p-6 sticky top-0 z-40 border-b border-gray-100">
-        <h1 className="text-2xl font-bold text-orange-600">SportHub</h1>
-        <p className="text-sm text-gray-500">Olá, {profile?.name || "Atleta"}!</p>
-      </header>
+    <div className="min-h-screen bg-gray-50">
+      <Navbar />
+      
+      <main className="container mx-auto px-4 py-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {/* Hero Section */}
+          <div className="lg:col-span-2 space-y-6">
+            <section className="relative overflow-hidden rounded-3xl bg-orange-600 p-8 md:p-12 text-white shadow-xl">
+              <div className="relative z-10 max-w-lg space-y-4">
+                <Badge className="bg-white/20 text-white border-none">Destaque do Dia</Badge>
+                <h1 className="text-4xl md:text-5xl font-bold leading-tight">
+                  Sua jornada esportiva começa aqui.
+                </h1>
+                <p className="text-orange-100 text-lg">
+                  Acompanhe notícias, agende treinos e conecte-se com a comunidade do {profile?.favoriteSports[0] || "esporte"}.
+                </p>
+                <button className="bg-white text-orange-600 px-6 py-3 rounded-xl font-bold flex items-center gap-2 hover:bg-orange-50 transition-colors">
+                  Explorar Agora <ArrowRight size={20} />
+                </button>
+              </div>
+              <div className="absolute top-0 right-0 w-1/2 h-full opacity-20 pointer-events-none">
+                <TrendingUp size={300} className="translate-x-20 -translate-y-10" />
+              </div>
+            </section>
 
-      <main className="p-4 space-y-6 max-w-md mx-auto">
-        <section className="space-y-4">
-          <div className="bg-orange-600 text-white p-6 rounded-3xl shadow-lg">
-            <h2 className="text-xl font-bold mb-2">Bem-vindo ao seu Feed</h2>
-            <p className="text-orange-100 text-sm">
-              Aqui você encontra as últimas novidades do mundo dos esportes que você ama.
-            </p>
+            <section className="space-y-6">
+              <div className="flex items-center justify-between">
+                <h2 className="text-2xl font-bold text-gray-900">Notícias Personalizadas</h2>
+                <span className="text-orange-600 font-medium cursor-pointer hover:underline">Ver todas</span>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {filteredNews.map((item) => (
+                  <Card key={item.id} className="group overflow-hidden rounded-2xl border-none shadow-sm hover:shadow-md transition-all">
+                    <div className="relative h-48 overflow-hidden">
+                      <img 
+                        src={item.image} 
+                        alt={item.title} 
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
+                      />
+                      <Badge className="absolute top-4 left-4 bg-white/90 text-orange-600 hover:bg-white">
+                        {item.sport}
+                      </Badge>
+                    </div>
+                    <div className="p-4 space-y-2">
+                      <span className="text-xs text-gray-400">{item.date}</span>
+                      <h4 className="font-bold text-gray-900 leading-tight group-hover:text-orange-600 transition-colors">
+                        {item.title}
+                      </h4>
+                    </div>
+                  </Card>
+                ))}
+              </div>
+            </section>
           </div>
-        </section>
 
-        <section className="space-y-4">
-          <h3 className="font-bold text-lg px-1">Notícias para você</h3>
-          <div className="space-y-4">
-            {filteredNews.map((item) => (
-              <Card key={item.id} className="overflow-hidden rounded-2xl border-none shadow-sm">
-                <img src={item.image} alt={item.title} className="w-full h-48 object-cover" />
-                <div className="p-4 space-y-2">
-                  <Badge variant="secondary" className="bg-orange-100 text-orange-700 hover:bg-orange-100">
-                    {item.sport}
-                  </Badge>
-                  <h4 className="font-semibold text-gray-900 leading-tight">{item.title}</h4>
-                </div>
-              </Card>
-            ))}
+          {/* Sidebar */}
+          <div className="space-y-8">
+            <Card className="p-6 rounded-2xl border-none shadow-sm bg-white">
+              <h3 className="font-bold text-lg mb-4">Sugestões para você</h3>
+              <div className="space-y-4">
+                {profile?.favoriteSports.map((sport) => (
+                  <div key={sport} className="flex items-center gap-4 p-3 rounded-xl hover:bg-gray-50 cursor-pointer transition-colors">
+                    <div className="w-12 h-12 rounded-lg bg-orange-100 flex items-center justify-center text-orange-600">
+                      <Trophy size={24} />
+                    </div>
+                    <div>
+                      <p className="font-bold text-sm">Comunidade {sport}</p>
+                      <p className="text-xs text-gray-500">1.2k membros ativos</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </Card>
+
+            <Card className="p-6 rounded-2xl border-none shadow-sm bg-gray-900 text-white">
+              <h3 className="font-bold text-lg mb-2">SportHub Premium</h3>
+              <p className="text-gray-400 text-sm mb-4">Acesse treinos exclusivos e estatísticas avançadas.</p>
+              <button className="w-full bg-orange-600 py-2 rounded-lg font-bold hover:bg-orange-700 transition-colors">
+                Assinar Agora
+              </button>
+            </Card>
           </div>
-        </section>
+        </div>
       </main>
-
-      <BottomNav />
     </div>
   );
 };
