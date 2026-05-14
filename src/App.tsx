@@ -11,6 +11,7 @@ import Schedule from "./pages/Schedule";
 import Marketplace from "./pages/Marketplace";
 import Profile from "./pages/Profile";
 import Settings from "./pages/Settings";
+import News from "./pages/News";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -25,6 +26,7 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/onboarding" element={<Onboarding />} />
+            <Route path="/news" element={<News />} />
             <Route path="/media" element={<Media />} />
             <Route path="/agenda" element={<Schedule />} />
             <Route path="/marketplace" element={<Marketplace />} />

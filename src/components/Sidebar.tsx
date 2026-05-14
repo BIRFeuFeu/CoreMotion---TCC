@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { 
   Home, Film, Calendar, ShoppingBag, User, 
-  Settings, ChevronRight, ChevronLeft, LogOut 
+  Settings, ChevronRight, ChevronLeft, LogOut, Newspaper 
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -14,6 +14,7 @@ const Sidebar = () => {
 
   const menuItems = [
     { icon: Home, label: "Início", path: "/" },
+    { icon: Newspaper, label: "Notícias", path: "/news" },
     { icon: Film, label: "Mídia", path: "/media" },
     { icon: Calendar, label: "Agenda", path: "/agenda" },
     { icon: ShoppingBag, label: "Marketplace", path: "/marketplace" },

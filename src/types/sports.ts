@@ -15,6 +15,17 @@ export interface UserProfile {
   notificationsEnabled: boolean;
 }
 
+export interface NewsItem {
+  id: string;
+  title: string;
+  summary: string;
+  content: string;
+  sport: Sport;
+  date: string;
+  image: string;
+  author: string;
+}
+
 export interface Event {
   id: string;
   title: string;
