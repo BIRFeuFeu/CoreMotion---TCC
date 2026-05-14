@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { MapPin, Users, Plus, Clock } from "lucide-react";
+import { MapPin, Users, Plus, Clock, XCircle } from "lucide-react";
 import { UserProfile, Event, Sport } from "@/types/sports";
 import { showSuccess, showError } from "@/utils/toast";
 import { cn } from "@/lib/utils";
@@ -30,8 +30,7 @@ const Schedule = () => {
     if (savedProfile) setProfile(JSON.parse(savedProfile));
 
     const savedEvents = localStorage.getItem("events");
-    if (savedEvents) {
-      setEvents(JSON.parse(savedEvents));
+    if (savedEvents) {      setEvents(JSON.parse(savedEvents));
     } else {
       const initialEvents: Event[] = [
         { id: '1', title: 'Treino de Fundamentos', type: 'Treino', sport: 'Basquete', date: '2024-05-20 18:00', location: 'Quadra Central', coach: 'Prof. Marcos', participants: ['João', 'Maria'] },
@@ -76,6 +75,19 @@ const Schedule = () => {
       if (e.id === eventId && !e.participants.includes(profile.name)) {
         showSuccess("Inscrição realizada!");
         return { ...e, participants: [...e.participants, profile.name] };
+      }
+      return e;
+    });
+    setEvents(updatedEvents);
+    localStorage.setItem("events", JSON.stringify(updatedEvents));
+  };
+
+  const handleLeave = (eventId: string) => {
+    if (!profile) return;
+    const updatedEvents = events.map(e => {
+      if (e.id === eventId) {
+        showSuccess("Inscrição cancelada.");
+        return { ...e, participants: e.participants.filter(p => p !== profile.name) };
       }
       return e;
     });
@@ -196,14 +208,20 @@ const Schedule = () => {
                   ))}
                 </div>
 
-                {profile?.role === 'Atleta' && !event.participants.includes(profile.name) && (
-                  <Button onClick={() => handleJoin(event.id)} className="bg-red-600 hover:bg-red-700 rounded-xl px-6 shadow-md shadow-red-100">
-                    Participar
-                  </Button>
-                )}
-                
-                {profile?.role === 'Atleta' && event.participants.includes(profile.name) && (
-                  <Badge className="bg-green-100 text-green-700 border-none px-4 py-1.5 font-bold">Inscrito</Badge>
+                {profile?.role === 'Atleta' && (
+                  event.participants.includes(profile.name) ? (
+                    <Button 
+                      variant="outline" 
+                      onClick={() => handleLeave(event.id)} 
+                      className="border-red-200 text-red-600 hover:bg-red-50 rounded-xl px-4 gap-2"
+                    >
+                      <XCircle size={16} /> Sair
+                    </Button>
+                  ) : (
+                    <Button onClick={() => handleJoin(event.id)} className="bg-red-600 hover:bg-red-700 rounded-xl px-6 shadow-md shadow-red-100">
+                      Participar
+                    </Button>
+                  )
                 )}
               </div>
             </Card>

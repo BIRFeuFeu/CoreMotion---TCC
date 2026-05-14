@@ -49,7 +49,10 @@ const Index = () => {
                 <p className="text-red-100 text-lg">
                   Acompanhe notícias, agende treinos e conecte-se com a comunidade do {profile?.favoriteSports[0] || "esporte"}.
                 </p>
-                <button className="bg-white text-red-600 px-6 py-3 rounded-xl font-bold flex items-center gap-2 hover:bg-red-50 transition-colors shadow-lg">
+                <button 
+                  onClick={() => navigate("/media")}
+                  className="bg-white text-red-600 px-6 py-3 rounded-xl font-bold flex items-center gap-2 hover:bg-red-50 transition-colors shadow-lg"
+                >
                   Explorar Agora <ArrowRight size={20} />
                 </button>
               </div>
@@ -61,7 +64,7 @@ const Index = () => {
             <section className="space-y-6">
               <div className="flex items-center justify-between">
                 <h2 className="text-2xl font-bold text-gray-900 tracking-tight">Notícias para Você</h2>
-                <span className="text-red-600 font-bold cursor-pointer hover:underline">Ver todas</span>
+                <span className="text-red-600 font-bold cursor-pointer hover:underline" onClick={() => navigate("/media")}>Ver todas</span>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {filteredNews.map((item) => (

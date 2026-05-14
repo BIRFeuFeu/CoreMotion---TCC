@@ -6,22 +6,49 @@ import Navbar from "@/components/Navbar";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { User, Settings, LogOut, Bell, ShieldCheck, Trophy, Activity, Target } from "lucide-react";
-import { UserProfile } from "@/types/sports";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { User, Settings, LogOut, Bell, Trophy, Activity, Target, Save } from "lucide-react";
+import { UserProfile, Sport } from "@/types/sports";
+import { showSuccess } from "@/utils/toast";
+
+const sportsList: Sport[] = ['Judô', 'Jiu-jitsu', 'Basquete', 'Futebol', 'Vôlei'];
 
 const Profile = () => {
   const navigate = useNavigate();
   const [profile, setProfile] = useState<UserProfile | null>(null);
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+  
+  // Edit states
+  const [editName, setEditName] = useState("");
+  const [editSports, setEditSports] = useState<Sport[]>([]);
 
   useEffect(() => {
     const saved = localStorage.getItem("userProfile");
-    if (saved) setProfile(JSON.parse(saved));
-    else navigate("/onboarding");
+    if (saved) {
+      const p = JSON.parse(saved);
+      setProfile(p);
+      setEditName(p.name);
+      setEditSports(p.favoriteSports);
+    } else {
+      navigate("/onboarding");
+    }
   }, [navigate]);
 
   const handleLogout = () => {
     localStorage.removeItem("userProfile");
     navigate("/onboarding");
+  };
+
+  const handleSaveProfile = () => {
+    if (!profile) return;
+    const updatedProfile = { ...profile, name: editName, favoriteSports: editSports };
+    localStorage.setItem("userProfile", JSON.stringify(updatedProfile));
+    setProfile(updatedProfile);
+    setIsEditDialogOpen(false);
+    showSuccess("Perfil atualizado com sucesso!");
   };
 
   if (!profile) return null;
@@ -47,9 +74,51 @@ const Profile = () => {
                   <Badge key={s} className="bg-red-50 text-red-600 border-none font-bold">{s}</Badge>
                 ))}
               </div>
-              <Button variant="outline" className="w-full rounded-xl gap-2 border-gray-200 hover:bg-red-50 hover:text-red-600 hover:border-red-200">
-                <Settings size={18} /> Editar Perfil
-              </Button>
+              
+              <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
+                <DialogTrigger asChild>
+                  <Button variant="outline" className="w-full rounded-xl gap-2 border-gray-200 hover:bg-red-50 hover:text-red-600 hover:border-red-200">
+                    <Settings size={18} /> Editar Perfil
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="sm:max-w-[425px] rounded-3xl">
+                  <DialogHeader>
+                    <DialogTitle>Editar Perfil</DialogTitle>
+                  </DialogHeader>
+                  <div className="grid gap-6 py-4">
+                    <div className="space-y-2">
+                      <Label>Nome</Label>
+                      <Input 
+                        value={editName} 
+                        onChange={e => setEditName(e.target.value)}
+                        className="rounded-xl focus-visible:ring-red-600"
+                      />
+                    </div>
+                    <div className="space-y-3">
+                      <Label>Esportes Favoritos</Label>
+                      <div className="grid grid-cols-2 gap-2">
+                        {sportsList.map((sport) => (
+                          <div key={sport} className="flex items-center space-x-2 bg-gray-50 p-2 rounded-lg">
+                            <Checkbox 
+                              id={`edit-${sport}`} 
+                              checked={editSports.includes(sport)}
+                              onCheckedChange={(checked) => {
+                                if (checked) setEditSports([...editSports, sport]);
+                                else setEditSports(editSports.filter(s => s !== sport));
+                              }}
+                              className="data-[state=checked]:bg-red-600 data-[state=checked]:border-red-600"
+                            />
+                            <Label htmlFor={`edit-${sport}`} className="text-sm cursor-pointer">{sport}</Label>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                  <Button onClick={handleSaveProfile} className="w-full bg-red-600 hover:bg-red-700 rounded-xl gap-2 font-bold">
+                    <Save size={18} /> Salvar Alterações
+                  </Button>
+                </DialogContent>
+              </Dialog>
             </Card>
 
             <Card className="p-6 rounded-3xl border-none shadow-sm bg-gray-900 text-white">

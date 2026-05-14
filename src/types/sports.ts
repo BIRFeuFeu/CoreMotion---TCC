@@ -1,5 +1,6 @@
 export type Sport = 'Judô' | 'Jiu-jitsu' | 'Basquete' | 'Futebol' | 'Vôlei';
 export type UserRole = 'Atleta' | 'Técnico' | 'Civil';
+export type Category = 'Calçados' | 'Vestuário' | 'Equipamentos' | 'Acessórios';
 
 export interface UserProfile {
   name: string;
@@ -24,5 +25,6 @@ export interface Product {
   name: string;
   price: number;
   sport: Sport;
+  category: Category;
   image: string;
 }
