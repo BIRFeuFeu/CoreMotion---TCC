@@ -2,15 +2,19 @@
 
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Navbar from "@/components/Navbar";
+import Sidebar from "@/components/Sidebar";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Textarea } from "@/components/ui/textarea";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { User, Settings, LogOut, Bell, Trophy, Activity, Target, Save } from "lucide-react";
+import { 
+  User, Settings, Trophy, Mail, Building2, 
+  Medal, Swords, Save, GraduationCap 
+} from "lucide-react";
 import { UserProfile, Sport } from "@/types/sports";
 import { showSuccess } from "@/utils/toast";
 
@@ -22,29 +26,22 @@ const Profile = () => {
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   
   // Edit states
-  const [editName, setEditName] = useState("");
-  const [editSports, setEditSports] = useState<Sport[]>([]);
+  const [editData, setEditData] = useState<Partial<UserProfile>>({});
 
   useEffect(() => {
     const saved = localStorage.getItem("userProfile");
     if (saved) {
       const p = JSON.parse(saved);
       setProfile(p);
-      setEditName(p.name);
-      setEditSports(p.favoriteSports);
+      setEditData(p);
     } else {
       navigate("/onboarding");
     }
   }, [navigate]);
 
-  const handleLogout = () => {
-    localStorage.removeItem("userProfile");
-    navigate("/onboarding");
-  };
-
   const handleSaveProfile = () => {
     if (!profile) return;
-    const updatedProfile = { ...profile, name: editName, favoriteSports: editSports };
+    const updatedProfile = { ...profile, ...editData } as UserProfile;
     localStorage.setItem("userProfile", JSON.stringify(updatedProfile));
     setProfile(updatedProfile);
     setIsEditDialogOpen(false);
@@ -54,61 +51,104 @@ const Profile = () => {
   if (!profile) return null;
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <Navbar />
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-950 flex">
+      <Sidebar />
       
-      <main className="container mx-auto px-4 py-8 max-w-6xl">
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+      <main className="flex-1 ml-20 p-8">
+        <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-4 gap-8">
           <div className="lg:col-span-1 space-y-6">
-            <Card className="p-8 rounded-3xl border-none shadow-sm bg-white text-center">
+            <Card className="p-8 rounded-3xl border-none shadow-sm bg-white dark:bg-gray-900 text-center">
               <div className="relative inline-block mb-4">
-                <div className="w-32 h-32 rounded-full bg-red-50 flex items-center justify-center text-red-600 mx-auto border-4 border-white shadow-lg">
+                <div className="w-32 h-32 rounded-full bg-red-50 dark:bg-red-900/20 flex items-center justify-center text-red-600 mx-auto border-4 border-white dark:border-gray-800 shadow-lg">
                   <User size={64} />
                 </div>
-                <div className="absolute bottom-0 right-0 bg-green-500 w-6 h-6 rounded-full border-4 border-white" />
               </div>
-              <h2 className="text-2xl font-bold text-gray-900 tracking-tight">{profile.name}</h2>
+              <h2 className="text-2xl font-bold text-gray-900 dark:text-white tracking-tight">{profile.name}</h2>
               <p className="text-gray-500 mb-4 font-medium">{profile.role}</p>
               <div className="flex flex-wrap justify-center gap-2 mb-6">
                 {profile.favoriteSports.map(s => (
-                  <Badge key={s} className="bg-red-50 text-red-600 border-none font-bold">{s}</Badge>
+                  <Badge key={s} className="bg-red-50 text-red-600 dark:bg-red-900/20 dark:text-red-500 border-none font-bold">{s}</Badge>
                 ))}
               </div>
               
               <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
                 <DialogTrigger asChild>
-                  <Button variant="outline" className="w-full rounded-xl gap-2 border-gray-200 hover:bg-red-50 hover:text-red-600 hover:border-red-200">
+                  <Button variant="outline" className="w-full rounded-xl gap-2 border-gray-200 dark:border-gray-800 hover:bg-red-50 hover:text-red-600 dark:hover:bg-red-900/20">
                     <Settings size={18} /> Editar Perfil
                   </Button>
                 </DialogTrigger>
-                <DialogContent className="sm:max-w-[425px] rounded-3xl">
+                <DialogContent className="sm:max-w-[600px] rounded-3xl max-h-[90vh] overflow-y-auto">
                   <DialogHeader>
-                    <DialogTitle>Editar Perfil</DialogTitle>
+                    <DialogTitle>Editar Perfil Completo</DialogTitle>
                   </DialogHeader>
                   <div className="grid gap-6 py-4">
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                        <Label>Nome</Label>
+                        <Input 
+                          value={editData.name} 
+                          onChange={e => setEditData({...editData, name: e.target.value})}
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label>Contato (Gmail)</Label>
+                        <Input 
+                          value={editData.contact} 
+                          onChange={e => setEditData({...editData, contact: e.target.value})}
+                        />
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                        <Label>Academia / Clube</Label>
+                        <Input 
+                          value={editData.club} 
+                          onChange={e => setEditData({...editData, club: e.target.value})}
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label>Faixa Atual (se houver)</Label>
+                        <Input 
+                          value={editData.currentBelt} 
+                          onChange={e => setEditData({...editData, currentBelt: e.target.value})}
+                        />
+                      </div>
+                    </div>
+
                     <div className="space-y-2">
-                      <Label>Nome</Label>
-                      <Input 
-                        value={editName} 
-                        onChange={e => setEditName(e.target.value)}
-                        className="rounded-xl focus-visible:ring-red-600"
+                      <Label>Quadro de Medalhas</Label>
+                      <Textarea 
+                        value={editData.medalBoard} 
+                        onChange={e => setEditData({...editData, medalBoard: e.target.value})}
+                        placeholder="Ex: 3 Ouros, 2 Pratas..."
                       />
                     </div>
+
+                    <div className="space-y-2">
+                      <Label>Campeonatos que participou</Label>
+                      <Textarea 
+                        value={editData.championships} 
+                        onChange={e => setEditData({...editData, championships: e.target.value})}
+                        placeholder="Ex: Estadual 2023, Copa Brasil..."
+                      />
+                    </div>
+
                     <div className="space-y-3">
                       <Label>Esportes Favoritos</Label>
-                      <div className="grid grid-cols-2 gap-2">
+                      <div className="grid grid-cols-3 gap-2">
                         {sportsList.map((sport) => (
-                          <div key={sport} className="flex items-center space-x-2 bg-gray-50 p-2 rounded-lg">
+                          <div key={sport} className="flex items-center space-x-2 bg-gray-50 dark:bg-gray-800 p-2 rounded-lg">
                             <Checkbox 
                               id={`edit-${sport}`} 
-                              checked={editSports.includes(sport)}
+                              checked={editData.favoriteSports?.includes(sport)}
                               onCheckedChange={(checked) => {
-                                if (checked) setEditSports([...editSports, sport]);
-                                else setEditSports(editSports.filter(s => s !== sport));
+                                const current = editData.favoriteSports || [];
+                                if (checked) setEditData({...editData, favoriteSports: [...current, sport]});
+                                else setEditData({...editData, favoriteSports: current.filter(s => s !== sport)});
                               }}
-                              className="data-[state=checked]:bg-red-600 data-[state=checked]:border-red-600"
                             />
-                            <Label htmlFor={`edit-${sport}`} className="text-sm cursor-pointer">{sport}</Label>
+                            <Label htmlFor={`edit-${sport}`} className="text-xs cursor-pointer">{sport}</Label>
                           </div>
                         ))}
                       </div>
@@ -120,82 +160,56 @@ const Profile = () => {
                 </DialogContent>
               </Dialog>
             </Card>
-
-            <Card className="p-6 rounded-3xl border-none shadow-sm bg-gray-900 text-white">
-              <h3 className="font-bold mb-4 flex items-center gap-2">
-                <Trophy size={18} className="text-red-500" /> Conquistas
-              </h3>
-              <div className="space-y-4">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center">🥇</div>
-                  <div>
-                    <p className="text-sm font-bold">Primeiro Treino</p>
-                    <p className="text-xs text-gray-400">Concluído em Maio</p>
-                  </div>
-                </div>
-              </div>
-            </Card>
           </div>
 
           <div className="lg:col-span-3 space-y-8">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <Card className="p-6 rounded-2xl border-none shadow-sm bg-white flex items-center gap-4">
-                <div className="p-3 bg-red-50 text-red-600 rounded-xl">
-                  <Activity size={24} />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <Card className="p-6 rounded-2xl border-none shadow-sm bg-white dark:bg-gray-900 flex items-start gap-4">
+                <div className="p-3 bg-yellow-50 dark:bg-yellow-900/20 text-yellow-600 rounded-xl">
+                  <Medal size={24} />
                 </div>
-                <div>
-                  <p className="text-sm text-gray-500 font-medium">Treinos</p>
-                  <p className="text-2xl font-black">12</p>
-                </div>
-              </Card>
-              <Card className="p-6 rounded-2xl border-none shadow-sm bg-white flex items-center gap-4">
-                <div className="p-3 bg-green-50 text-green-600 rounded-xl">
-                  <Target size={24} />
-                </div>
-                <div>
-                  <p className="text-sm text-gray-500 font-medium">Meta Semanal</p>
-                  <p className="text-2xl font-black">85%</p>
+                <div className="flex-1">
+                  <p className="text-sm text-gray-500 font-medium mb-1">Quadro de Medalhas</p>
+                  <p className="text-lg font-bold dark:text-white">{profile.medalBoard || "Nenhuma medalha registrada"}</p>
                 </div>
               </Card>
-              <Card className="p-6 rounded-2xl border-none shadow-sm bg-white flex items-center gap-4">
-                <div className="p-3 bg-purple-50 text-purple-600 rounded-xl">
-                  <Trophy size={24} />
+              
+              <Card className="p-6 rounded-2xl border-none shadow-sm bg-white dark:bg-gray-900 flex items-start gap-4">
+                <div className="p-3 bg-blue-50 dark:bg-blue-900/20 text-blue-600 rounded-xl">
+                  <Swords size={24} />
                 </div>
-                <div>
-                  <p className="text-sm text-gray-500 font-medium">Pontos</p>
-                  <p className="text-2xl font-black">2.450</p>
+                <div className="flex-1">
+                  <p className="text-sm text-gray-500 font-medium mb-1">Campeonatos</p>
+                  <p className="text-lg font-bold dark:text-white">{profile.championships || "Nenhum campeonato registrado"}</p>
                 </div>
               </Card>
             </div>
 
-            <section className="space-y-4">
-              <h3 className="text-xl font-bold text-gray-900 tracking-tight">Configurações CoreMotion</h3>
-              <Card className="divide-y divide-gray-100 border-none shadow-sm rounded-3xl overflow-hidden bg-white">
-                <div className="p-6 flex items-center justify-between hover:bg-gray-50 cursor-pointer transition-colors">
-                  <div className="flex items-center gap-4">
-                    <div className="p-2 bg-gray-100 rounded-lg text-gray-600">
-                      <Bell size={20} />
-                    </div>
-                    <div>
-                      <p className="font-bold">Notificações</p>
-                      <p className="text-sm text-gray-500">Alertas de novos treinos e amistosos</p>
-                    </div>
-                  </div>
-                  <div className="w-12 h-6 bg-red-600 rounded-full relative">
-                    <div className="absolute right-1 top-1 w-4 h-4 bg-white rounded-full" />
-                  </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <Card className="p-6 rounded-2xl border-none shadow-sm bg-white dark:bg-gray-900 space-y-2">
+                <div className="flex items-center gap-2 text-red-600 mb-2">
+                  <Building2 size={18} />
+                  <span className="text-xs font-black uppercase tracking-widest">Clube / Academia</span>
                 </div>
+                <p className="text-xl font-black dark:text-white">{profile.club || "Não informado"}</p>
               </Card>
-            </section>
 
-            <Button 
-              variant="ghost" 
-              className="text-red-500 hover:text-red-600 hover:bg-red-50 rounded-xl px-8 font-bold"
-              onClick={handleLogout}
-            >
-              <LogOut size={20} className="mr-2" />
-              Sair da Conta
-            </Button>
+              <Card className="p-6 rounded-2xl border-none shadow-sm bg-white dark:bg-gray-900 space-y-2">
+                <div className="flex items-center gap-2 text-red-600 mb-2">
+                  <GraduationCap size={18} />
+                  <span className="text-xs font-black uppercase tracking-widest">Graduação</span>
+                </div>
+                <p className="text-xl font-black dark:text-white">{profile.currentBelt || "N/A"}</p>
+              </Card>
+
+              <Card className="p-6 rounded-2xl border-none shadow-sm bg-white dark:bg-gray-900 space-y-2">
+                <div className="flex items-center gap-2 text-red-600 mb-2">
+                  <Mail size={18} />
+                  <span className="text-xs font-black uppercase tracking-widest">Contato</span>
+                </div>
+                <p className="text-lg font-bold dark:text-white truncate">{profile.contact || "Não informado"}</p>
+              </Card>
+            </div>
           </div>
         </div>
       </main>

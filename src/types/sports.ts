@@ -7,6 +7,12 @@ export interface UserProfile {
   role: UserRole;
   favoriteSports: Sport[];
   avatar?: string;
+  medalBoard: string;
+  championships: string;
+  club: string;
+  currentBelt?: string;
+  contact: string;
+  notificationsEnabled: boolean;
 }
 
 export interface Event {
